@@ -5,9 +5,11 @@ import argparse
 # corri em uat porque fizeram o pull-request (por aprovar) de uat->main
 # corri em prod porque aprovaram o pull-request de uat->main
 # teste final 2023 06 28
+# teste final 2023 06 28 v2
 
 def deploy_to_environment(connection_string):
     # Lógica para implantação no ambiente com base na conexão fornecida
+    print("teste final 2023 06 28 v2")
     print(f"Deploying to environment with connection string: {connection_string}")
     # Restante da lógica de implantação
     print("Hello, World from development branch -> merged to main!")
