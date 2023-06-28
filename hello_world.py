@@ -1,7 +1,7 @@
 import requests
 import argparse
 
-
+# vim de development
 def deploy_to_environment(connection_string):
     # Lógica para implantação no ambiente com base na conexão fornecida
     print(f"Deploying to environment with connection string: {connection_string}")
