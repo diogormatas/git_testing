@@ -3,6 +3,8 @@ name: CI/CD Workflow
 on:
   pull_request:
     branches:
+      - development
+      - uat
       - main
 
 env:
@@ -31,16 +33,16 @@ jobs:
 
       - name: Deploy to environment
         run: |
-          if [[ ${{ github.event_name }} == 'pull_request' ]]; then
-            # Pull request, use DEV_CONNECTION_STRING
+          if [[ ${{ github.event_name }} == 'pull_request' && ${{ github.base_ref }} == 'development' && ${{ github.head_ref }} == 'uat' ]]; then
+            # Pull request from development to uat, use DEV_CONNECTION_STRING
             echo "Deploying to dev environment with connection string $DEV_CONNECTION_STRING"
             python hello_world.py --connection-string $DEV_CONNECTION_STRING
-          elif [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
-            # main branch, use UAT_CONNECTION_STRING
+          elif [[ ${{ github.event_name }} == 'pull_request' && ${{ github.base_ref }} == 'uat' && ${{ github.head_ref }} == 'main' ]]; then
+            # Pull request from uat to main, use UAT_CONNECTION_STRING
             echo "Deploying to UAT environment with connection string $UAT_CONNECTION_STRING"
             python hello_world.py --connection-string $UAT_CONNECTION_STRING
-          else
-            # Other branches, use PROD_CONNECTION_STRING
+          elif [[ ${{ github.event_name }} == 'pull_request' && ${{ github.base_ref }} == 'development' && ${{ github.head_ref }} == 'uat' && ${{ github.event.action }} == 'closed' ]]; then
+            # Pull request from development to uat closed (approved), use PROD_CONNECTION_STRING
             echo "Deploying to prod environment with connection string $PROD_CONNECTION_STRING"
             python hello_world.py --connection-string $PROD_CONNECTION_STRING
           fi
