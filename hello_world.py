@@ -1,7 +1,10 @@
 import requests
 import argparse
 
-# vim de developmentsss
+# corri em development porque fizeram o pull-request (por aprovar) de development->uat
+# corri em uat porque fizeram o pull-request (por aprovar) de uat->main
+# corri em prod porque aprovaram o pull-request de uat->main
+
 def deploy_to_environment(connection_string):
     # Lógica para implantação no ambiente com base na conexão fornecida
     print(f"Deploying to environment with connection string: {connection_string}")
