@@ -3,7 +3,7 @@ name: CI/CD Workflow
 on:
   pull_request:
     branches:
-      - master
+      - main
 
 env:
   DEV_CONNECTION_STRING: "string_de_dev"
@@ -35,8 +35,8 @@ jobs:
             # Pull request, use DEV_CONNECTION_STRING
             echo "Deploying to dev environment with connection string $DEV_CONNECTION_STRING"
             python hello_world.py --connection-string $DEV_CONNECTION_STRING
-          elif [[ ${{ github.ref }} == 'refs/heads/master' ]]; then
-            # Master branch, use UAT_CONNECTION_STRING
+          elif [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
+            # main branch, use UAT_CONNECTION_STRING
             echo "Deploying to UAT environment with connection string $UAT_CONNECTION_STRING"
             python hello_world.py --connection-string $UAT_CONNECTION_STRING
           else
