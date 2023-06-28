@@ -36,19 +36,19 @@ jobs:
 
       - name: Deploy to environment
         run: |
-          if [[ ${{ github.event_name }} == 'pull_request' && ${{ github.head_ref }} == 'dev' && ${{ github.base_ref }} == 'uat' ]]; then
+          if [[ ${{ github.event_name }} == 'pull_request' && ${{ github.base_ref }} == 'dev' && ${{ github.head_ref }} == 'uat' ]]; then
             # Pull request from dev to uat, use DEV_CONNECTION_STRING
-            echo "COND 1"
+            echo "COND1"
             echo "Deploying to dev environment with connection string $DEV_CONNECTION_STRING"
             python hello_world.py --connection-string $DEV_CONNECTION_STRING
-          elif [[ ${{ github.head_ref }} == 'uat' && ${{ github.base_ref }} == 'main' && github.event.review.state == 'approved' ]]; then
-            # Pull request from dev to uat closed (approved), use PROD_CONNECTION_STRING
-            echo "COND 2"
+          elif [[ ${{ github.event_name }} == 'pull_request' && ${{ github.base_ref }} == 'uat' && ${{ github.head_ref }} == 'main' && ${{ github.event.pull_request.merged }} == true ]]; then
+            # Pull request from uat to main (merged), use PROD_CONNECTION_STRING
+            echo "COND2"
             echo "Deploying to prod environment with connection string $PROD_CONNECTION_STRING"
             python hello_world.py --connection-string $PROD_CONNECTION_STRING
-          elif [[ ${{ github.head_ref }} == 'uat' && ${{ github.base_ref }} == 'main' ]]; then
+          elif [[ ${{ github.event_name }} == 'pull_request' && ${{ github.base_ref }} == 'uat' && ${{ github.head_ref }} == 'main' ]]; then
             # Pull request from uat to main, use UAT_CONNECTION_STRING
-            echo "COND 3"
+            echo "COND3"
             echo "Deploying to UAT environment with connection string $UAT_CONNECTION_STRING"
             python hello_world.py --connection-string $UAT_CONNECTION_STRING
           fi
