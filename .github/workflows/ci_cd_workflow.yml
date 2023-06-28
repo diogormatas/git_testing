@@ -37,12 +37,12 @@ jobs:
             # Pull request from development to uat, use DEV_CONNECTION_STRING
             echo "Deploying to dev environment with connection string $DEV_CONNECTION_STRING"
             python hello_world.py --connection-string $DEV_CONNECTION_STRING
+          elif [[ ${{ github.event_name }} == 'pull_request' && ${{ github.base_ref }} == 'uat' && ${{ github.head_ref }} == 'main' && ${{ github.event.action }} == 'closed' ]]; then
+            # Pull request from development to uat closed (approved), use PROD_CONNECTION_STRING
+            echo "Deploying to prod environment with connection string $PROD_CONNECTION_STRING"
+            python hello_world.py --connection-string $PROD_CONNECTION_STRING
           elif [[ ${{ github.event_name }} == 'pull_request' && ${{ github.base_ref }} == 'uat' && ${{ github.head_ref }} == 'main' ]]; then
             # Pull request from uat to main, use UAT_CONNECTION_STRING
             echo "Deploying to UAT environment with connection string $UAT_CONNECTION_STRING"
             python hello_world.py --connection-string $UAT_CONNECTION_STRING
-          elif [[ ${{ github.event_name }} == 'pull_request' && ${{ github.base_ref }} == 'development' && ${{ github.head_ref }} == 'uat' && ${{ github.event.action }} == 'closed' ]]; then
-            # Pull request from development to uat closed (approved), use PROD_CONNECTION_STRING
-            echo "Deploying to prod environment with connection string $PROD_CONNECTION_STRING"
-            python hello_world.py --connection-string $PROD_CONNECTION_STRING
           fi
