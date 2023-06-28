@@ -4,6 +4,7 @@ import argparse
 # corri em development porque fizeram o pull-request (por aprovar) de development->uat
 # corri em uat porque fizeram o pull-request (por aprovar) de uat->main
 # corri em prod porque aprovaram o pull-request de uat->main
+# teste final 2023 06 28
 
 def deploy_to_environment(connection_string):
     # Lógica para implantação no ambiente com base na conexão fornecida
