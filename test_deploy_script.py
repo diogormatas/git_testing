@@ -1,7 +1,7 @@
 import pytest
 import requests
 from unittest.mock import patch
-from deploy_script import deploy_to_environment
+from hello_world import deploy_to_environment
 
 
 def test_deploy_to_environment(capsys):
