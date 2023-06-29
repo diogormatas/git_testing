@@ -1,5 +1,9 @@
 name: Tools Setup Workflow
 
+# Trigger manual
+# on:
+#   workflow_dispatch:   
+
 on:
   push:
     branches:
