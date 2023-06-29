@@ -1,5 +1,5 @@
 import pytest
-from hello_world import deploy_to_environment
+from tool_setup import deploy_to_environment
 
 # comentario dummy
 def test_deploy_to_environment(capsys):
