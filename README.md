@@ -20,7 +20,7 @@ Siga as etapas abaixo para utilizar este workflow no seu projeto:
 
 3. No arquivo `.github/workflows/main.yml`, ajuste as variáveis de ambiente (`DEV_CONNECTION_STRING`, `UAT_CONNECTION_STRING` e `PROD_CONNECTION_STRING`) de acordo com suas necessidades. Essas variáveis são usadas durante a implantação para estabelecer a conexão com os ambientes.
 
-4. No arquivo `hello_world.py`, personalize a lógica de implantação para atender às suas necessidades específicas. O exemplo atual imprime mensagens diferentes com base na branch em que ocorreu o push.
+4. No arquivo `tool_setup.py`, personalize a lógica de implantação para atender às suas necessidades específicas. O exemplo atual imprime mensagens diferentes com base na branch em que ocorreu o push.
 
 5. Realize commits no seu fork para disparar o workflow ou acione manualmente o workflow na página do seu repositório no GitHub, selecionando a aba "Actions" e clicando no botão "Run workflow".
 
