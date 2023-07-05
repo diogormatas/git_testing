@@ -53,7 +53,7 @@ jobs:
             tool_name=$(basename "$folder")
             tool_name_setup="setup_${tool_name}"
             echo "---->${tool_name_setup}<-----"
-            #if [ "${{ env['setup_' . $tool_name] }}" == "true" ]; then
+           
             if [ "true" == "true" ]; then
               echo "Running tests for ${folder}"
               cd "$folder"
