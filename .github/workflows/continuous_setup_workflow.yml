@@ -17,9 +17,6 @@ jobs:
         with:
           python-version: 3.x
 
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-
       - name: Find tool folders
         id: find_folders
         run: |
@@ -32,7 +29,10 @@ jobs:
             tool_name=$(basename "$folder")
             if [ "$tool_name" != "template" ]; then
               echo "Running setup for ${tool_name}"
-              python "$folder/setup.py"
+              cd "$folder"
+              pip install -r requirements.txt
+              python setup.py
+              cd ..
               echo "::set-output name=setup_${tool_name}::true"
             fi
           done
@@ -49,9 +49,6 @@ jobs:
         with:
           python-version: 3.x
 
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-
       - name: Find tool folders
         id: find_folders
         run: |
@@ -62,8 +59,15 @@ jobs:
         run: |
           for folder in ${{ steps.find_folders.outputs.folders }}; do
             tool_name=$(basename "$folder")
-            if [ "$tool_name" != "template" ]; then             
-              echo "Running tests for ${tool_name}"
-              python "$folder/tests.py"              
+            if [ "$tool_name" != "template" ]; then
+              if [ "${{ needs.job_setup.outputs['setup_' + tool_name] }}" == "true" ]; then
+                echo "Running tests for ${tool_name}"
+                cd "$folder"
+                pip install -r requirements.txt
+                python tests.py
+                cd ..
+              else
+                echo "Skipping tests for ${tool_name} as setup was not successful"
+              fi
             fi
           done
