@@ -46,14 +46,15 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.x
+      - name: Print environment variables
+        run: |
+          echo "${{ env.setup_snowflake }}"
+          echo "${{ env.setup_dbt }}"
+          echo "${{ env.setup_sharepoint }}"
 
       - name: Loop tool folders and run tests
         id: tests
         run: |
-          echo "${{ env.setup_dbt }}"
-          echo "${{ env.setup_snowflake }}"
-          echo "${{ env.setup_sharepoint }}"
-          
           for folder in */; do
             tool_name=$(basename "$folder")
             tool_name_setup="setup_${tool_name}"
