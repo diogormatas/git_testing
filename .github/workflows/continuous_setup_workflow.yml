@@ -33,7 +33,7 @@ jobs:
               pip install -r requirements.txt
               python setup.py
               cd ..
-              echo "::set-output name=setup_${tool_name}::true"
+              echo "setup_${tool_name}=true" >> $GITHUB_ENV
             fi
           done
 
