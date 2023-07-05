@@ -20,19 +20,22 @@ jobs:
       - name: Find tool folders
         id: find_folders
         run: |
-          echo "::set-output name=folders::$(find . -type d -not -path './.git/*' -not -name 'template')"
+          echo "::set-output name=folders::$(find . -type d -not -path './.git/*' -not -path './.github/*' -not -name 'template')"
 
       - name: Loop tool folders and run setup
         id: setup
         run: |
-          find . -type d -not -path './.git/*' -not -name 'template' -exec bash -c '
+          find . -type d -not -path './.git/*' -not -path './.github/*' -not -name 'template' -exec bash -c '
             for folder do
-              echo "folder -> ${folder}<-"
               tool_name=$(basename "$folder")
               echo "Running setup for ${tool_name}"
               cd "$folder"
-              pip install -r requirements.txt
-              python setup.py
+              if [ -f "requirements.txt" ]; then
+                pip install -r requirements.txt
+              fi
+              if [ -f "setup.py" ]; then
+                python setup.py
+              fi
               cd ..
               echo "setup_${tool_name}=true" >> $GITHUB_ENV
             done' bash {} +
@@ -52,18 +55,21 @@ jobs:
       - name: Find tool folders
         id: find_folders
         run: |
-          echo "::set-output name=folders::$(find . -type d -not -path './.git/*' -not -name 'template')"
+          echo "::set-output name=folders::$(find . -type d -not -path './.git/*' -not -path './.github/*' -not -name 'template')"
           
       - name: Loop tool folders and run tests
         id: tests
         run: |
-          find . -type d -not -path './.git/*' -not -name 'template' -exec bash -c '
+          find . -type d -not -path './.git/*' -not -path './.github/*' -not -name 'template' -exec bash -c '
             for folder do
-              echo "folder -> ${folder}<-"
               tool_name=$(basename "$folder")
               echo "Running tests for ${tool_name}"
               cd "$folder"
-              pip install -r requirements.txt
-              python tests.py
+              if [ -f "requirements.txt" ]; then
+                pip install -r requirements.txt
+              fi
+              if [ -f "tests.py" ]; then
+                python tests.py
+              fi
               cd ..
             done' bash {} +
