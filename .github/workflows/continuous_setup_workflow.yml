@@ -32,6 +32,7 @@ jobs:
             fi
             cd ..
             echo "setup_${tool_name}=true" >> $GITHUB_ENV
+            echo "setup_${tool_name}=true"
           done
 
   job_tests:
@@ -54,7 +55,7 @@ jobs:
             tool_name_setup="setup_${tool_name}"
             # tool_setup=$(env['${tool_name_setup}'])
             tool_setup=env['setup_dbt']
-            
+            echo ">>>>>>$tool_setup<<<<<"
             echo ">>>>>>$tool_name_setup<<<<<"
             if [ "$tool_setup" == "true" ]; then
               echo "Running tests for ${folder}"
