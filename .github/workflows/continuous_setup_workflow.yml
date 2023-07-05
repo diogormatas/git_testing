@@ -51,13 +51,18 @@ jobs:
         run: |
           for folder in */; do
             tool_name=$(basename "$folder")
-            echo "Running tests for ${folder}"
-            cd "$folder"
-            if [ -f "requirements.txt" ]; then
-              pip install -r requirements.txt
+            tool_name_setup="setup_${tool_name}"
+            echo "---->${tool_name_setup}<-----"
+            #if [ "${{ env['setup_' . $tool_name] }}" == "true" ]; then
+            if [ "true" == "true" ]; then
+              echo "Running tests for ${folder}"
+              cd "$folder"
+              if [ -f "requirements.txt" ]; then
+                pip install -r requirements.txt
+              fi
+              if [ -f "tests.py" ]; then
+                python tests.py
+              fi
+              cd ..
             fi
-            if [ -f "tests.py" ]; then
-              python tests.py
-            fi
-            cd ..
           done
