@@ -31,8 +31,11 @@ jobs:
               python setup.py
             fi
             cd ..
-            echo "${{ format('setup_{0}=true', tool_name) }}" >> $GITHUB_ENV
+            echo "setup_${tool_name}=true" >> $GITHUB_ENV
           done
+          echo "${{ env.setup_dbt }}"
+          echo "${{ env.setup_snowflake }}"
+          echo "${{ env.setup_sharepoint }}"
 
   job_tests:
     runs-on: ubuntu-latest
