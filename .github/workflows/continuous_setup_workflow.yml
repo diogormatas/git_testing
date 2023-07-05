@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  setup_and_tests:
+  job_listing_tools:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -17,7 +17,7 @@ jobs:
         run: |
           echo "::set-output name=folders::$(find . -type d -not -path './.git/*' -not -name 'template')"
 
-      - name: Setup and test
+      - name: Loop tool folders
         run: |
           for folder in ${{ steps.find_folders.outputs.folders }}; do
             tool_name=$(basename "$folder")
@@ -39,9 +39,9 @@ jobs:
             fi
           done
 
-  ${{ needs.setup_and_tests.outputs.setup_job_name }}:
+  job_setup:
     runs-on: ubuntu-latest
-    needs: setup_and_tests
+    needs: job_listing_tools
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -49,9 +49,9 @@ jobs:
       - name: Run setup
         run: echo "Running ${{ needs.setup_and_tests.outputs.setup_job_name }}"
 
-  ${{ needs.setup_and_tests.outputs.tests_job_name }}:
+  job_tests:
     runs-on: ubuntu-latest
-    needs: ${{ needs.setup_and_tests.outputs.setup_job_name }}
+    needs: job_setup
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
