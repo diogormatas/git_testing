@@ -22,7 +22,7 @@ jobs:
         run: |
           for folder in */; do
             tool_name=$(basename "$folder")
-            echo "Running setup for ${tool_name}"
+            echo "Running setup for ${folder}"
             cd "$folder"
             if [ -f "requirements.txt" ]; then
               pip install -r requirements.txt
@@ -51,7 +51,7 @@ jobs:
         run: |
           for folder in */; do
             tool_name=$(basename "$folder")
-            echo "Running tests for ${tool_name}"
+            echo "Running tests for ${folder}"
             cd "$folder"
             if [ -f "requirements.txt" ]; then
               pip install -r requirements.txt
