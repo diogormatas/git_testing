@@ -3,7 +3,7 @@ name: Setup and Tests
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   job_setup:
