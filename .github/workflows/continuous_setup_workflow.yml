@@ -17,6 +17,10 @@ jobs:
         with:
           python-version: 3.x
           
+      - name: Create tools.config file
+        run: |
+          > tools.config
+          
       - name: Loop tool folders and run setup
         id: setup
         run: |
@@ -28,10 +32,13 @@ jobs:
               pip install -r requirements.txt
             fi
             if [ -f "setup.py" ]; then
-              python setup.py
+               if python setup.py; then
+                echo "setup_${tool_name}=true" >> ../tools.config
+              else
+                echo "setup_${tool_name}=false" >> ../tools.config
+              fi
             fi
             cd ..
-            echo "::set-output name=variavel_nome::diogo"
           done
           
 
@@ -46,9 +53,23 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.x
-      - name: Print environment variables
+      
+      - name: Read tools.config file
+        id: read_tools_config
         run: |
-          echo "Variável Nome: ${{ needs.job_setup.outputs.variavel_nome }}"
+          while IFS= read -r line; do
+            variable=$(echo "$line" | awk -F '=' '{print $1}')
+            value=$(echo "$line" | awk -F '=' '{print $2}')
+            echo "$variable=$value" >> $GITHUB_ENV
+          done < tools.config
+
+      - name: Use variables in the next step
+        run: |
+          echo "Variable 1: ${{ env.setup_dbt }}"
+          echo "Variable 1: ${{ env.setup_snowflake }}"
+          echo "Variable 1: ${{ env.setup_sharepoint }}"
+
+      
       - name: Loop tool folders and run tests
         id: tests
         run: |
