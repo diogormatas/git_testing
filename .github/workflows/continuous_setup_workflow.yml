@@ -1,9 +1,9 @@
-name: Setup and Tests
+name: Continuous Setup
 
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   job_setup:
