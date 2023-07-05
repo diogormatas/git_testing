@@ -31,7 +31,7 @@ jobs:
               python setup.py
             fi
             cd ..
-            echo "${{ format('setup_{0}=true', tool_name) }}" >> $GITHUB_ENV"
+            echo "${{ format('setup_{0}=true', tool_name) }}" >> $GITHUB_ENV
           done
 
   job_tests:
@@ -51,8 +51,8 @@ jobs:
         run: |
           for folder in */; do
             tool_name=$(basename "$folder")
-            tool_name_setup="setup_${tool_name}"            
-            tool_setup="${{ env.$tool_name_setup }}"
+            tool_name_setup="setup_${tool_name}"
+            tool_setup="${{ env[tool_name_setup] }}"
             echo ">>>>>>$tool_setup<<<<<"  
             if [ "$tool_setup" == "true" ]; then
               echo "Running tests for ${folder}"
