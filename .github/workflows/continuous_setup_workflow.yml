@@ -1,4 +1,4 @@
-name: Setup and Tests
+name: Continuous Setup
 
 on:
   push:
