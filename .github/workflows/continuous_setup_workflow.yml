@@ -54,8 +54,7 @@ jobs:
             tool_name_setup="setup_${tool_name}"
             # tool_setup=$(env['${tool_name_setup}'])
             tool_setup=env['setup_dbt']
-            echo ">>>>>>${tool_setup}<<<<<"
-            echo ">>>>>>$tool_setup<<<<<"
+            echo ">>>>>>${{env[tool_name_setup]}}<<<<<"
             if [ "$tool_setup" == "true" ]; then
               echo "Running tests for ${folder}"
               cd "$folder"
