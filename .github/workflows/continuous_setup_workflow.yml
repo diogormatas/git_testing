@@ -52,7 +52,7 @@ jobs:
           for folder in */; do
             tool_name=$(basename "$folder")
             tool_name_setup="setup_${tool_name}"
-            if [ "${{ env[${tool_name_setup}] }}" == "true" ]; then
+            if [ "${{ env[tool_name_setup] }}" == "true" ]; then
               echo "Running tests for ${folder}"
               cd "$folder"
               if [ -f "requirements.txt" ]; then
