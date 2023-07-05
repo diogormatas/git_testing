@@ -27,6 +27,7 @@ jobs:
         run: |
           find . -type d -not -path './.git/*' -not -name 'template' -exec bash -c '
             for folder do
+              echo "folder -> ${folder}<-"
               tool_name=$(basename "$folder")
               echo "Running setup for ${tool_name}"
               cd "$folder"
@@ -58,6 +59,7 @@ jobs:
         run: |
           find . -type d -not -path './.git/*' -not -name 'template' -exec bash -c '
             for folder do
+              echo "folder -> ${folder}<-"
               tool_name=$(basename "$folder")
               echo "Running tests for ${tool_name}"
               cd "$folder"
