@@ -33,9 +33,7 @@ jobs:
             cd ..
             echo "setup_${tool_name}=true" >> $GITHUB_ENV
           done
-          echo "${{ env.setup_dbt }}"
-          echo "${{ env.setup_snowflake }}"
-          echo "${{ env.setup_sharepoint }}"
+          
 
   job_tests:
     runs-on: ubuntu-latest
@@ -52,6 +50,10 @@ jobs:
       - name: Loop tool folders and run tests
         id: tests
         run: |
+          echo "${{ env.setup_dbt }}"
+          echo "${{ env.setup_snowflake }}"
+          echo "${{ env.setup_sharepoint }}"
+          
           for folder in */; do
             tool_name=$(basename "$folder")
             tool_name_setup="setup_${tool_name}"
