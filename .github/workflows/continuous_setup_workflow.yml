@@ -52,7 +52,7 @@ jobs:
           for folder in */; do
             tool_name=$(basename "$folder")
             tool_name_setup="setup_${tool_name}"
-            tool_setup="${{ env[$(tool_name_setup)] }}"
+            tool_setup="${{ env[{tool_name_setup}] }}"
             echo ">>>>>>${tool_setup}<<<<<"
             echo ">>>>>>$tool_setup<<<<<"
             if [ "$tool_setup" == "true" ]; then
