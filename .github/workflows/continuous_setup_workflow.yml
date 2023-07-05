@@ -31,7 +31,7 @@ jobs:
               python setup.py
             fi
             cd ..
-            echo "::set-env name=setup_${tool_name}::true"
+            echo "variavel_nome=diogo" >> $GITHUB_ENV
           done
           
 
@@ -48,10 +48,8 @@ jobs:
           python-version: 3.x
       - name: Print environment variables
         run: |
-          echo "${{ env.setup_snowflake }}"
-          echo "${{ env.setup_dbt }}"
-          echo "${{ env.setup_sharepoint }}"
-
+          echo "${{ env.variavel_nome }}"
+          echo "${{ env[variavel_nome] }}"
       - name: Loop tool folders and run tests
         id: tests
         run: |
