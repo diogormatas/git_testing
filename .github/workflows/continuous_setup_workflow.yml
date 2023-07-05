@@ -41,6 +41,13 @@ jobs:
             cd ..
           done
           
+      - name: Upload tools.config artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: tools-config
+          path: tools.config
+
+          
 
   job_tests:
     runs-on: ubuntu-latest
@@ -54,6 +61,11 @@ jobs:
         with:
           python-version: 3.x
       
+      - name: Download tools.config artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: tools-config
+
       - name: Read tools.config file
         id: read_tools_config
         run: |
