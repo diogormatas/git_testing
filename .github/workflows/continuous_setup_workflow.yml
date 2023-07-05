@@ -63,7 +63,7 @@ jobs:
           for folder in ${{ steps.find_folders.outputs.folders }}; do
             tool_name=$(basename "$folder")
             if [ "$tool_name" != "template" ]; then
-              if [ "${{ needs.job_setup.outputs['setup_' + tool_name] }}" == "true" ]; then
+              if [ "${{ needs.job_setup.outputs['setup_' .join('', [tool_name]) ] }}" == "true" ]; then
                 echo "Running tests for ${tool_name}"
                 python "$folder/tests.py"
               else
