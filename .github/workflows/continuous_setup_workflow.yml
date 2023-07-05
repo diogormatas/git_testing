@@ -16,25 +16,22 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.x
-
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-
-      - name: Find tool folders
-        id: find_folders
-        run: |
-          echo "::set-output name=folders::$(find . -type d -not -path './.git/*' -not -name 'template')"
-
+          
       - name: Loop tool folders and run setup
         id: setup
         run: |
-          for folder in ${{ steps.find_folders.outputs.folders }}; do
+          for folder in */; do
             tool_name=$(basename "$folder")
-            if [ "$tool_name" != "template" ]; then
-              echo "Running setup for ${tool_name}"
-              python "$folder/setup.py"
-              echo "::set-output name=setup_${tool_name}::true"
+            echo "Running setup for ${tool_name}"
+            cd "$folder"
+            if [ -f "requirements.txt" ]; then
+              pip install -r requirements.txt
             fi
+            if [ -f "setup.py" ]; then
+              python setup.py
+            fi
+            cd ..
+            echo "setup_${tool_name}=true" >> $GITHUB_ENV
           done
 
   job_tests:
@@ -49,21 +46,18 @@ jobs:
         with:
           python-version: 3.x
 
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-
-      - name: Find tool folders
-        id: find_folders
-        run: |
-          echo "::set-output name=folders::$(find . -type d -not -path './.git/*' -not -name 'template')"
-
       - name: Loop tool folders and run tests
         id: tests
         run: |
-          for folder in ${{ steps.find_folders.outputs.folders }}; do
+          for folder in */; do
             tool_name=$(basename "$folder")
-            if [ "$tool_name" != "template" ]; then             
-              echo "Running tests for ${tool_name}"
-              python "$folder/tests.py"              
+            echo "Running tests for ${tool_name}"
+            cd "$folder"
+            if [ -f "requirements.txt" ]; then
+              pip install -r requirements.txt
             fi
+            if [ -f "tests.py" ]; then
+              python tests.py
+            fi
+            cd ..
           done
