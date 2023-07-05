@@ -3,7 +3,7 @@ name: Continuous Setup
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   setup_and_tests:
