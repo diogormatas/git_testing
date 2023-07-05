@@ -12,7 +12,7 @@ Além disso, o job `tool-test` é acionado em eventos de push nas branches `deve
 
 ## Utilização
 
-Siga as etapas abaixo para utilizar este workflow no seu projeto:
+Siga as etapas abaixo para utilizar o workflow no seu projeto:
 
 1. Faça um fork deste repositório.
 
