@@ -1,6 +1,6 @@
 # Continuous Setup Workflow
 
-Este repositório contém um exemplo de workflow do GitHub Actions para configurar ferramentas e realizar implantações de acordo com o fluxo de trabalho GitFlow.
+Este repositório contém um workflow exemplo do GitHub Actions para configurar ferramentas e realizar implantações de acordo com o fluxo de trabalho GitFlow.
 
 ## Descrição
 
