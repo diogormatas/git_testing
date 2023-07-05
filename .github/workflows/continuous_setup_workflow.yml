@@ -49,7 +49,6 @@ jobs:
       - name: Print environment variables
         run: |
           echo "${{ env.variavel_nome }}"
-          echo "${{ env[variavel_nome] }}"
       - name: Loop tool folders and run tests
         id: tests
         run: |
