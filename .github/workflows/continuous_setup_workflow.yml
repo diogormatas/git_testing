@@ -16,6 +16,11 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.x
+          
+      - name: Find tool folders
+        id: find_folders
+        run: |
+          echo "::set-output name=folders::$(find . -type d -not -path './.git/*' -not -name 'template')"
 
       - name: Loop tool folders and run setup
         id: setup
@@ -42,7 +47,12 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.x
-
+      
+      - name: Find tool folders
+        id: find_folders
+        run: |
+          echo "::set-output name=folders::$(find . -type d -not -path './.git/*' -not -name 'template')"
+          
       - name: Loop tool folders and run tests
         id: tests
         run: |
