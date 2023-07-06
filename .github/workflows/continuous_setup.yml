@@ -2,19 +2,15 @@ name: Continuous Setup
 
 on:
   workflow_dispatch:
-    inputs:
-      setup_tool:
-        description: 'Tool to set up and test'
-        required: true
 
 jobs:
-  setup_global:
+  job_setup:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
         tools_list: [dbt, snowflake, sharepoint]
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -27,7 +23,7 @@ jobs:
       - name: Run setup for specified tool
         id: setup
         run: |
-          tool_name=$(basename "${{ github.event.inputs.setup_tool }}")
+          tool_name=${{ matrix.tools_list }}
           echo "Running setup for $tool_name"
           cd "$tool_name"
           if [ -f "requirements.txt" ]; then
@@ -37,7 +33,7 @@ jobs:
             python setup.py
           fi
           cd ..
-  
+
   job_tests:
     needs: job_setup
     if: ${{ needs.job_setup.result == 'success' }}
@@ -54,7 +50,7 @@ jobs:
 
       - name: Run tests for specified tool
         run: |
-          tool_name=$(basename "${{ github.event.inputs.setup_tool }}")
+          tool_name=${{ matrix.tools_list }}
           echo "Running tests for $tool_name"
           cd "$tool_name"
           if [ -f "requirements.txt" ]; then
