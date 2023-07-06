@@ -5,18 +5,10 @@ on:
 
 jobs:
   setup_global:
-    runs-on: ubuntu-latest
-
     strategy:
       matrix:
         tools_list: [dbt, snowflake, sharepoint]
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Trigger Continuous Setup Base for each tool
-        uses: ./.github/workflows/peter-evans/continuous_setup_base.yml
-        with:
-          inputs: |
-            setup_tool: ${{ matrix.tools_list }}
+        
+    uses: ./.github/workflows/continuous_setup_base.yml
+    with:
+      setup_tool: ${{ matrix.tools_list }}
