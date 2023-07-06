@@ -7,24 +7,16 @@ jobs:
   setup_global:
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Trigger Continuous Setup Base for each tool
-        uses: actions/github@v3
-        with:
-          script: |
-            const tools = ${{ toJSON(matrix.tools_list) }};
-            const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
+    strategy:
+      matrix:
+        tools_list: [dbt, snowflake, sharepoint]
 
-            for (const tool of tools) {
-              console.log(`Starting Continuous Setup Base for ${tool}`);
-              const createWorkflowRun = await octokit.request('POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches', {
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                workflow_id: 'continuous_setup_base.yml',
-                ref: context.ref,
-                inputs: {
-                  setup_tool: tool
-                }
-              });
-              console.log(`Workflow run created for ${tool}`);
-            }
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Trigger Continuous Setup Base for each tool
+        uses: ./.github/workflows/peter-evans/continuous_setup_base.yml
+        with:
+          inputs: |
+            setup_tool: ${{ matrix.tools_list }}
