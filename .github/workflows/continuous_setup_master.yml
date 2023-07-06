@@ -10,8 +10,12 @@ jobs:
     strategy:
       matrix:
         setup_tools: [dbt, snowflake, sharepoint]
-
     steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CONTEXT $GITHUB_CONTEXT.context.ref"
+
       - name: Trigger Continuous Setup Base
         uses: actions/github-script@v4
         with:
