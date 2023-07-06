@@ -7,8 +7,7 @@ on:
         description: 'Tool to set up and test'
         required: true
 
-jobs:
-	  
+jobs: 
   job_setup:
     runs-on: ubuntu-latest
     
