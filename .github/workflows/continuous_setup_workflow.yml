@@ -1,4 +1,4 @@
-name: Continuous Setup
+name: Continuous Setup Workflow
 
 on:
   push:
