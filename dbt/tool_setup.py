@@ -24,7 +24,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--connection-string", required=True, help="Connection string for the environment")
     args = parser.parse_args()
-
+    erro_de_compilacao_aqui
     deploy_to_environment(args.connection_string)
 
 if __name__ == "__main__":
