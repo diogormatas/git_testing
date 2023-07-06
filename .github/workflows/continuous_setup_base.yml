@@ -1,11 +1,13 @@
 name: Continuous Setup Base
 
 on:
-  workflow_dispatch:
+  # workflow_dispatch:
+  workflow_call:
     inputs:
       setup_tool:
         description: 'Tool to set up and test'
         required: true
+        type: string
 
 jobs: 
   job_setup:
