@@ -7,19 +7,18 @@ jobs:
   setup_global:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        tools_list: [dbt, snowflake, sharepoint]
-
     steps:
       - name: Trigger Continuous Setup Base for each tool
         uses: actions/github-script@v4
         with:
           script: |
+            const { Octokit } = require("@octokit/core");
+            const octokit = new Octokit();
+
             const tools = ${{ toJSON(matrix.tools_list) }};
             for (const tool of tools) {
               console.log(`Starting Continuous Setup Base for ${tool}`);
-              const createWorkflowRun = await octokit.rest.actions.createWorkflowDispatch({
+              const createWorkflowRun = await octokit.request('POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches', {
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 workflow_id: 'continuous_setup_base.yml',
