@@ -1,0 +1,30 @@
+name: Continuous Setup Master
+
+on:
+  workflow_dispatch:
+
+jobs:
+  setup_master:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        setup_tools: [dbt, snowflake, sharepoint]
+
+    steps:
+      - name: Trigger Continuous Setup Base
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const setupTools = ${{ toJSON(matrix.setup_tools) }};
+            for (const tool of setupTools) {
+              const workflowRun = await github.actions.createWorkflowDispatch({
+                workflow_file: 'continuous_setup_base.yml',
+                ref: github.context.ref,
+                inputs: {
+                  setup_tool: tool
+                }
+              });
+              console.log(`Started Continuous Setup Base for ${tool}`);
+            }
