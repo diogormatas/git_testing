@@ -8,8 +8,6 @@ on:
 jobs:
   find_projects:
     runs-on: ubuntu-latest
-    outputs:
-      projects: ${{ steps.set_projects.outputs.projects }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -17,15 +15,14 @@ jobs:
       - name: Find project folders
         id: set_projects
         run: |
-          projects=$(find ./* -maxdepth 0 -type d -not -name 'template' -printf "%f\n")
-          echo "::set-output name=projects::$projects"
+          find ./* -maxdepth 0 -type d -not -name 'template' -printf "%f\n"
 
   job_setup:
     needs: find_projects
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        project: ${{ fromJson(needs.find_projects.outputs.projects) }}
+        project: ${{ steps.set_projects.outputs.stdout }}
 
     steps:
       - name: Checkout repository
@@ -54,7 +51,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        project: ${{ fromJson(needs.find_projects.outputs.projects) }}
+        project: ${{ steps.set_projects.outputs.stdout }}
 
     steps:
       - name: Checkout repository
