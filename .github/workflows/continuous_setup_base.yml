@@ -1,43 +1,32 @@
-name: Continuous Setup Workflow
+name: Continuous Setup Base
 
 on:
-  push:
-    branches:
-      - master
+  workflow_dispatch:
+    inputs:
+      setup_tool:
+        description: 'Tool to set up and test'
+        required: true
 
 jobs:
-  find_projects:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Find project folders
-        id: set_projects
-        run: |
-          find ./* -maxdepth 0 -type d -not -name 'template' -printf "%f\n"
-
+	  
   job_setup:
-    needs: find_projects
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        project: ${{ steps.set_projects.outputs.stdout }}
-
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v2          
         with:
           python-version: 3.x
-
-      - name: Run setup for project ${{ matrix.project }}
+          
+      - name: Run setup for specified tool
+        id: setup
         run: |
-          tool_name=$(basename "${{ matrix.project }}")
+          tool_name=$(basename "${{ github.event.inputs.setup_tool }}")
           echo "Running setup for $tool_name"
-          cd "${{ matrix.project }}"
+          cd "$tool_name"
           if [ -f "requirements.txt" ]; then
             pip install -r requirements.txt
           fi
@@ -48,10 +37,8 @@ jobs:
   
   job_tests:
     needs: job_setup
+    if: ${{ needs.job_setup.result == 'success' }}
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        project: ${{ steps.set_projects.outputs.stdout }}
 
     steps:
       - name: Checkout repository
@@ -62,11 +49,11 @@ jobs:
         with:
           python-version: 3.x
 
-      - name: Run tests for project ${{ matrix.project }}
+      - name: Run tests for specified tool
         run: |
-          tool_name=$(basename "${{ matrix.project }}")
+          tool_name=$(basename "${{ github.event.inputs.setup_tool }}")
           echo "Running tests for $tool_name"
-          cd "${{ matrix.project }}"
+          cd "$tool_name"
           if [ -f "requirements.txt" ]; then
             pip install -r requirements.txt
           fi
